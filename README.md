@@ -9,10 +9,10 @@ Running the application without any parameter will start a simple web server usi
 httpho
 ~~~
 
-Or you can define the log level using `RUST_LOG` environment variable.
+Or you can define the log level using `-l` or `--level` option at the command line.
 
 ~~~
-RUST_LOG=info httpho
+httpho -l info
 ~~~
 
 By default, the server is listening on all the local IPv4 addresses on port 8080, but this can easily be overwritten using command line arguments. Use the help subcommand for more information.
@@ -27,9 +27,10 @@ USAGE:
     httpho [OPTIONS] [SUBCOMMAND]
 
 OPTIONS:
-    -b, --bind <ADDRESS>    Binding address
+    -b, --bind <ADDRESS>    Binding address (default: 0.0.0.0)
     -h, --help              Print help information
-    -p, --port <PORT>       Binding port
+    -l, --log <LEVEL>       Log Level [off, error, warn, info, debug, or trace]
+    -p, --port <PORT>       Binding port (default: 8080)
     -V, --version           Print version information
 
 SUBCOMMANDS:
@@ -72,8 +73,9 @@ For a more complex configuration, you can define a configuration file and pass i
 #### Example
 Here is an example using a TOML configuration file.
 ~~~
-bind = 192.168.0.1
+bind = "192.168.0.1"
 port = 8000
+log = "INFO"
 
 [services]
     [services.proxy]

@@ -1,11 +1,13 @@
 use anyhow::Result;
 use clap::Parser;
 use config::{ Config, Map, File };
+use log::LevelFilter;
 use serde::Deserialize;
 use std::collections::HashMap;
 
 const DEFAULT_BIND: &'static str = "0.0.0.0";
 const DEFAULT_PORT: u16 = 8080u16;
+const DEFAULT_LOG: LevelFilter = LevelFilter::Off;
 const DEFAULT_PATH: &'static str = "";
 const DEFAULT_DIR: &'static str = ".";
 
@@ -24,12 +26,15 @@ enum Command {
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
-    /// Binding address
+    /// Binding address (default: 0.0.0.0)
     #[clap(short, long, value_name = "ADDRESS")]
     bind: Option<String>,
-    /// Binding port
+    /// Binding port (default: 8080)
     #[clap(short, long)]
     port: Option<u16>,
+    /// Log Level [off, error, warn, info, debug, or trace]
+    #[clap(short, long, value_name = "LEVEL")]
+    log: Option<LevelFilter>,
     #[clap(subcommand)]
     command: Option<Command>
 }
@@ -46,6 +51,7 @@ pub enum Service {
 pub struct Settings {
     pub bind: String,
     pub port: u16,
+    pub log: LevelFilter,
     pub services: Map<String, Service>
 }
 
@@ -57,6 +63,7 @@ impl Settings {
                 Config::builder()
                     .set_default("bind", DEFAULT_BIND)?
                     .set_default("port", DEFAULT_PORT.to_string())?
+                    .set_default("log", DEFAULT_LOG.to_string())?
                     .add_source(File::with_name(filename))
                     .build()?
                     .try_deserialize()?
@@ -85,6 +92,9 @@ impl Settings {
         if let Some(port) = args.port {
             settings.port = port;
         }
+        if let Some(log) = args.log {
+            settings.log = log;
+        }
         Ok(settings)
     }
 }
@@ -93,12 +103,13 @@ impl Default for Settings {
     fn default() -> Self {
         let bind = DEFAULT_BIND.to_string();
         let port = DEFAULT_PORT;
+        let log = DEFAULT_LOG;
         let path = DEFAULT_PATH.to_string();
         let dir = DEFAULT_DIR.to_string();
         let service = Service::Files { path , dir };
         let mut services: Map<String, Service> = HashMap::with_capacity(1);
         services.insert("default".to_string(), service);
-        Settings { bind, port, services }
+        Settings { bind, port, log, services }
     }
 }
 

@@ -49,11 +49,14 @@ async fn forward(req: HttpRequest, payload: Payload, urls: Data<Vec<(String, Url
 /// Main method called by the command line.
 #[actix_web::main]
 async fn main() -> Result<()> {
-    pretty_env_logger::init();
-
     // --- Configuration ---
     let settings = Settings::new()?;
-    log::trace!("Configuration: {:?}", &settings);
+
+    // --- Logger ---
+    pretty_env_logger::formatted_builder()
+        .filter_level(settings.log)
+        .init();
+    log::debug!("Configuration: {:?}", &settings);
 
     // --- Binding Address ---
     let address = (settings.bind, settings.port)
@@ -70,7 +73,6 @@ async fn main() -> Result<()> {
         })
         .collect();
     urls.sort_by(|a, b| b.0.cmp(&a.0));
-    println!("{:?}", &urls);
 
     // --- Services to configure ---
     let mut services: Vec<(String, httpho::Service)> = settings.services.into_iter()
@@ -88,7 +90,7 @@ async fn main() -> Result<()> {
             .app_data(Data::new(Client::default()));
 
         for (_, service) in services.iter() {
-            log::trace!("Configuring Service: {:?}", &service);
+            log::debug!("Configuring Service: {:?}", &service);
             match service {
                 httpho::Service::Files{path, dir} => {
                     let path = httpho::trim_final_slash(path);
