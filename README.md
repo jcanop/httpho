@@ -56,6 +56,7 @@ For a more complex configuration, you can define a configuration file and pass i
 |:----------|:-------:|:---------------------|
 | bind      | 0.0.0.0 | Binding address      |
 | port      | 8080    | Binding port         |
+| log       | OFF     | Log level            |
 | services  |         | An array of services |
 
 #### Service: Web Server
