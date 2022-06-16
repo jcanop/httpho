@@ -12,7 +12,7 @@ httpho
 Or you can define the log level using `RUST_LOG` environment variable.
 
 ~~~
-RUST\_LOG=info httpho
+RUST_LOG=info httpho
 ~~~
 
 By default, the server is listening on all the local IPv4 addresses on port 8080, but this can easily be overwritten using command line arguments. Use the help subcommand for more information.
