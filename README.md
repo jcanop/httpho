@@ -78,7 +78,7 @@ httpho config config.toml
 ~~~
 
 And here is the configuration file.
-~~~
+```toml
 bind = "192.168.0.1"
 port = 8000
 log = "INFO"
@@ -91,7 +91,7 @@ log = "INFO"
     [services.files]
     path = "/"
     dir = "/usr/share/html"
-~~~
+```
 
 Here is the same configuration file but in JSON format.
 ```json
@@ -104,4 +104,21 @@ Here is the same configuration file but in JSON format.
         "files": { "path": "/", "dir": "/usr/share/html" }
     }
 }
+```
+
+And here is the same configuration but in YML format
+```yml
+---
+bind: "192.168.0.1"
+port: 8000
+log: "INFO"
+
+services:
+    proxy:
+        path: "/api"
+        url: "http://192.168.0.2:9000/"
+
+    files:
+        path: "/"
+        dir: "/usr/share/html"
 ```
