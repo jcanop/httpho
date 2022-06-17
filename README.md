@@ -71,8 +71,13 @@ For a more complex configuration, you can define a configuration file and pass i
 | path      | URL path             |
 | url       | Target URL           |
 
-#### Example
+#### Examples
 Here is an example using a TOML configuration file.
+~~~
+httpho config config.toml
+~~~
+
+And here is the configuration file.
 ~~~
 bind = "192.168.0.1"
 port = 8000
@@ -88,7 +93,15 @@ log = "INFO"
     dir = "/usr/share/html"
 ~~~
 
-Running the application
-~~~
-httpho config config.toml
-~~~
+Here is the same configuration file but in JSON format.
+```json
+{
+    "bind": "192.168.0.1",
+    "port": 8000,
+    "log": "INFO",
+    "services": {
+        "proxy": { "path": "/api", "url": "http://192.168.0.2:9000/" },
+        "files": { "path": "/", "dir": "/usr/share/html" }
+    }
+}
+```
