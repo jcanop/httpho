@@ -18,7 +18,7 @@ enum Command {
     Config { filename: String },
     /// Configure a simple web service
     Files { dir: String },
-    /// Configure a simple proxy
+    /// Configure a simple reverse proxy
     Proxy { url: String }
 }
 

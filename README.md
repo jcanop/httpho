@@ -37,7 +37,7 @@ SUBCOMMANDS:
     config    Configure using a configuration file
     files     Configure a simple web service
     help      Print this message or the help of the given subcommand(s)
-    proxy     Configure a simple proxy
+    proxy     Configure a simple reverse proxy
 ~~~
 
 ## Reverse Proxy
